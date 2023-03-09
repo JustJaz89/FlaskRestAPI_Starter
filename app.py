@@ -49,7 +49,6 @@ class CarListResource(Resource):
         return cars_schema.dump(all_cars)
     
     def post(self):
-        print(request)
         new_car = Car(
             make = request.json["make"],
             model = request.json["model"],
@@ -59,6 +58,27 @@ class CarListResource(Resource):
         db.session.commit()
         return car_schema.dump(new_car), 201
 
+class CarResource(Resource):
+    def get(self, car_id):
+        car_from_db = Car.query.get_or_404(car_id)
+        return car_schema.dump(car_from_db)
+    
+    def delete(self, car_id):
+        car_from_db = Car.query.get_or_404(car_id)
+        db.session.delete(car_from_db)
+        return "", 204
+    
+    def put(self, car_id):
+        car_from_db = Car.query.get_or_404(car_id)
+        if "make" in request.json:
+            car_from_db.make = request.json["make"]
+        if "model" in request.json:
+            car_from_db.model = request.json["model"]
+        if "year" in request.json:
+            car_from_db.year = request.json["year"]
+        db.session.commit()
+        return car_schema.dump(car_from_db)
 
 # Routes
 api.add_resource(CarListResource, "/api/cars")
+api.add_resource(CarResource, "/api/cars/<int:car_id>")
