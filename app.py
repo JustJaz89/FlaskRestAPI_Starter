@@ -34,7 +34,12 @@ class Car(db.Model):
     
 
 # Schemas
+class CarSchema(ma.Schema):
+    class Meta:
+        fields = ("id", "make", "model", "year")
 
+car_schema = CarSchema()
+cars_schema = CarSchema(many = True)
 
 
 # Resources
