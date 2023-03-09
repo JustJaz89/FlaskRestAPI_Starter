@@ -59,14 +59,14 @@ class CarListResource(Resource):
         return cars_schema.dump(all_cars)
     
     def post(self):
-        new_car = Car(
-            make = request.json["make"],
-            model = request.json["model"],
-            year = request.json["year"]
-        )
-        db.session.add(new_car)
-        db.session.commit()
-        return car_schema.dump(new_car), 201
+        form_data = request.get_json()
+        try:
+            new_car =car_schema.load(form_data)
+            db.session.add(new_car)
+            db.session.commit()
+            return car_schema.dump(new_car), 201
+        except ValidationError as err:
+            return err.messages, 400
 
 class CarResource(Resource):
     def get(self, car_id):
