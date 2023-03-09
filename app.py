@@ -45,7 +45,8 @@ cars_schema = CarSchema(many = True)
 # Resources
 class CarListResource(Resource):
     def get(self):
-        return "Hello World!"
+        all_cars = Car.query.all()
+        return cars_schema.dump(all_cars)
 
 
 # Routes
