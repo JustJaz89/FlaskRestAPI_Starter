@@ -47,6 +47,9 @@ class CarListResource(Resource):
     def get(self):
         all_cars = Car.query.all()
         return cars_schema.dump(all_cars)
+    
+    def post(self):
+        pass
 
 
 # Routes
