@@ -29,6 +29,8 @@ class Car(db.Model):
     model = db.Column(db.String(255), nullable = False)
     year = db.Column(db.Integer)
 
+    def __repr__(self):
+        return f"{self.year} {self.make} {self.model}"
 
 # Schemas
 
