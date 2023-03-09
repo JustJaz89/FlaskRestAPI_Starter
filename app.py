@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from flask_migrate import Migrate
 from flask_restful import Api, Resource
+from marshmallow import post_load, fields, ValidationError
 from dotenv import load_dotenv
 from os import environ
 
@@ -35,8 +36,17 @@ class Car(db.Model):
 
 # Schemas
 class CarSchema(ma.Schema):
+    id = fields.Integer(primary_key = True)
+    make = fields.String(required = True)
+    model = fields.String(required = True)
+    year = fields.Integer()
+
     class Meta:
         fields = ("id", "make", "model", "year")
+
+    @post_load
+    def create_care(self, data, **kwargs):
+        return Car(**data)
 
 car_schema = CarSchema()
 cars_schema = CarSchema(many = True)
