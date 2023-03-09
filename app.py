@@ -30,7 +30,8 @@ class Car(db.Model):
     year = db.Column(db.Integer)
 
     def __repr__(self):
-        return f"{self.year} {self.make} {self.model}"
+        return f"{self.year}, {self.make}, {self.model}"
+    
 
 # Schemas
 
